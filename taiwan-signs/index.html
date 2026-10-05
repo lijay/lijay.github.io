@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台湾のおかしな日本語看板</title>
+<style>
+  :root {
+    --bg: #1a120e;
+    --cream: #f6ead7;
+    --dim: #cbbba6;
+    --amber: #e6a45a;
+    --line: rgba(246, 234, 215, 0.16);
+    --panel: rgba(246, 234, 215, 0.06);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: "Yu Gothic", "YuGothic", "Microsoft JhengHei", "PingFang TC", sans-serif;
+    overflow: hidden;
+  }
+  body {
+    background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(230, 164, 90, 0.16), transparent 55%),
+      radial-gradient(900px 600px at 110% 110%, rgba(160, 70, 40, 0.18), transparent 50%),
+      var(--bg);
+  }
+  .deck { height: 100%; position: relative; }
+  .slide {
+    display: none;
+    height: 100%;
+    padding: 4.2vh 4.5vw 11vh;
+    align-items: center;
+    justify-content: center;
+  }
+  .slide.active { display: flex; }
+  .inner {
+    width: min(1180px, 100%);
+    max-height: 100%;
+  }
+  .split {
+    width: min(1280px, 100%);
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(18px, 2.4vw, 40px);
+    align-items: center;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(2.4rem, 5.4vw, 4.6rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+  }
+  .sub {
+    margin: 0.7em 0 0;
+    font-size: clamp(1.15rem, 2.2vw, 1.7rem);
+    color: var(--amber);
+    font-weight: 500;
+  }
+  .hint {
+    margin-top: 2.2em;
+    color: var(--dim);
+    font-size: 0.95rem;
+  }
+  .center { text-align: center; }
+  .kicker {
+    margin: 0 0 0.45em;
+    color: var(--amber);
+    font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+    letter-spacing: 0.12em;
+  }
+  h2 {
+    margin: 0 0 0.35em;
+    font-size: clamp(1.85rem, 3.6vw, 3.15rem);
+    line-height: 1.25;
+    font-weight: 700;
+  }
+  .lead, .note, .kinds li, .qs li {
+    font-size: clamp(1.12rem, 1.85vw, 1.45rem);
+    line-height: 1.55;
+  }
+  .lead { margin: 0.2em 0 0.35em; }
+  .note { margin: 0.15em 0; color: var(--cream); }
+  .signlines {
+    margin: 0.4em 0 0.6em;
+    padding: 0;
+    list-style: none;
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    line-height: 1.45;
+  }
+  .gloss {
+    margin: 0.7em 0 0;
+    padding: 0.45em 0.7em;
+    border-left: 3px solid var(--amber);
+    color: var(--dim);
+    background: var(--panel);
+    font-size: clamp(0.95rem, 1.45vw, 1.15rem);
+    line-height: 1.45;
+  }
+  .src {
+    margin: 0.55em 0 0;
+    color: rgba(203, 187, 166, 0.78);
+    font-size: clamp(0.72rem, 1.05vw, 0.84rem);
+    line-height: 1.4;
+  }
+  .kinds, .qs {
+    list-style: none;
+    padding: 0;
+    margin: 0.6em auto 0;
+    max-width: 18em;
+    text-align: left;
+  }
+  .kinds li, .qs li {
+    padding: 0.38em 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .kinds li span, .qmark {
+    color: var(--amber);
+    margin-right: 0.45em;
+  }
+  .ask {
+    margin-top: 1.1em;
+    font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+    color: var(--amber);
+  }
+  .qs { max-width: 22em; }
+  .photo {
+    margin: 0;
+    background: #100c09;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    height: min(68vh, 640px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4vw;
+    background: linear-gradient(transparent, rgba(16, 10, 8, 0.92) 40%);
+    z-index: 2;
+  }
+  button {
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--cream);
+    background: rgba(246, 234, 215, 0.08);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.45em 1.1em;
+    cursor: pointer;
+  }
+  button:hover, button:focus-visible {
+    background: rgba(230, 164, 90, 0.22);
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+  }
+  button:disabled { opacity: 0.35; cursor: default; }
+  .count {
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    color: var(--dim);
+  }
+
+  .quiz .answer { display: none; }
+  .quiz.revealed .guess { display: none; }
+  .quiz.revealed .answer { display: grid; }
+  .quiz.revealed .answer.plain { display: block; }
+  .guess {
+    width: min(1100px, 100%);
+    text-align: center;
+  }
+  .guess .photo {
+    height: min(72vh, 680px);
+    margin: 0 auto;
+  }
+  .guess .puzzle {
+    margin: 0;
+    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  @media (max-width: 860px), (max-height: 640px) {
+    .split { grid-template-columns: 1fr; }
+    .photo { height: min(34vh, 280px); }
+    .slide { padding-top: 3vh; align-items: flex-start; overflow: auto; }
+    h1 { font-size: clamp(2rem, 8vw, 3rem); }
+    h2 { font-size: clamp(1.5rem, 6vw, 2.2rem); }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <section class="slide active" aria-label="表紙">
+    <div class="inner center">
+      <h1>台湾のおかしな日本語看板</h1>
+      <p class="sub">日本語の先生と話す用</p>
+      <p class="hint">まず写真だけ。次へで答え。</p>
+    </div>
+  </section>
+
+  <section class="slide" aria-label="導入">
+    <div class="inner center">
+      <p class="kicker">はじめに</p>
+      <h2>三つの種類</h2>
+      <ol class="kinds">
+        <li><span>1</span>まちがった単語</li>
+        <li><span>2</span>おしい日本語</li>
+        <li><span>3</span>意味がぶつかる</li>
+      </ol>
+      <p class="ask">どれが一番笑えますか？</p>
+    </div>
+  </section>
+
+  <section class="slide quiz" aria-label="イルカの骨ラーメン">
+    <div class="inner guess">
+      <figure class="photo"><img src="img/iruka.png" alt="看板の写真"></figure>
+      <p class="ask">どこが変でしょう？</p>
+    </div>
+    <div class="inner split answer">
+      <div>
+        <p class="kicker">まちがった単語</p>
+        <h2>イルカの骨ラーメン</h2>
+        <p class="lead">言いたかったのは、豚骨ラーメン。</p>
+        <p class="note">イルカは海豚。骨のラーメンに見えます。</p>
+        <p class="gloss">想寫豚骨拉麺，寫成海豚的骨頭。</p>
+        <p class="src">出典：Bahamut sn=2802656</p>
+      </div>
+      <figure class="photo">
+        <img src="img/iruka.png" alt="イルカの骨ラーメンと書かれた看板">
+      </figure>
+    </div>
+  </section>
+
+  <section class="slide quiz" aria-label="極上うンチ">
+    <div class="inner guess">
+      <figure class="photo"><img src="img/unchi.png" alt="赤い看板"></figure>
+      <p class="ask">どこが変でしょう？</p>
+    </div>
+    <div class="inner split answer">
+      <div>
+        <p class="kicker">まちがった単語</p>
+        <h2>極上うンチ</h2>
+        <ul class="signlines">
+          <li>極上うンチ</li>
+          <li>絶品中華　うンチ</li>
+          <li>和風うンチ</li>
+        </ul>
+        <p class="note">言いたかったのは、ランチ（昼食）。</p>
+        <p class="note">「ラ」がひらがなの「う」になって、うんち（大便）と読めます。</p>
+        <p class="note">同じ看板に、元氣お豚、お弁當・定食。</p>
+        <p class="gloss">午餐ランチ 被寫成うンチ（大便）。</p>
+        <p class="src">写真：Joshua 提供。看板の透かし：nihongo.goglobalist.com</p>
+      </div>
+      <figure class="photo">
+        <img src="img/unchi.png" alt="赤い看板。極上うンチ、絶品中華うンチ、和風うンチ">
+      </figure>
+    </div>
+  </section>
+
+
+  <section class="slide quiz" aria-label="控肉便當">
+    <div class="inner guess">
+      <figure class="photo"><img src="img/kongrou.jpg" alt="台鐵便當の写真"></figure>
+      <p class="ask">どこが変でしょう？</p>
+    </div>
+    <div class="inner split answer">
+      <div>
+        <p class="kicker">まちがった単語</p>
+        <h2>肉を控えた弁当</h2>
+        <p class="lead">台鉄の控肉便當。言いたかったのは、煮込んだ豚の弁当。</p>
+        <p class="note">控肉の「控」を「控える」（量を減らす）と読んでしまいました。</p>
+        <p class="note">隣の鮭魚便當は、サーモン弁当で合っています。</p>
+        <p class="gloss">控肉被譯成「把肉控制住／少放肉」，其實是滷肉。</p>
+        <p class="src">写真：Joshua 提供</p>
+      </div>
+      <figure class="photo">
+        <img src="img/kongrou.jpg" alt="控肉便當が肉を控えた弁当と書いてある">
+      </figure>
+    </div>
+  </section>
+
+
+  <section class="slide quiz" aria-label="男洗手間">
+    <div class="inner guess">
+      <figure class="photo"><img src="img/toire.webp" alt="のれんの写真"></figure>
+      <p class="ask">どこが変でしょう？</p>
+    </div>
+    <div class="inner split answer">
+      <div>
+        <p class="kicker">まちがった単語</p>
+        <h2>男洗手間</h2>
+        <p class="lead">大きい字は中国語です。日本語なら、男性用トイレ。</p>
+        <p class="note">右の「男性用トイレ」は合っています。</p>
+        <p class="note">「気をつけて滑る」は、気をつけて、それから滑る、と読めます。言いたかったのは、滑るので気をつけて。</p>
+        <p class="gloss">大字是中文男洗手間。気をつけて滑る像是叫人小心然後滑倒。</p>
+        <p class="src">写真：Joshua 提供</p>
+      </div>
+      <figure class="photo">
+        <img src="img/toire.webp" alt="男洗手間とのれん">
+      </figure>
+    </div>
+  </section>
+
+  
+
+  <section class="slide quiz" aria-label="極度乾燥しなさい">
+    <div class="inner guess">
+      <figure class="photo"><img src="img/superdry.jpg" alt="店の写真"></figure>
+      <p class="ask">どこが変でしょう？</p>
+    </div>
+    <div class="inner split answer">
+      <div>
+        <p class="kicker">意味がぶつかる</p>
+        <h2>極度乾燥（しなさい）</h2>
+        <p class="lead">西門。イギリスのブランド、Superdry。</p>
+        <p class="note">読むと、「すごく乾いている。しなさい」。</p>
+        <p class="gloss">英國品牌，日文讀起來像「極度乾燥，去做」。</p>
+      </div>
+      <figure class="photo">
+        <img src="img/superdry.jpg" alt="極度乾燥（しなさい）の看板">
+      </figure>
+    </div>
+  </section>
+
+  <section class="slide quiz" aria-label="食べようとする歓迎">
+    <div class="inner guess">
+      <figure class="photo"><img src="img/tabeyou.jpg" alt="看板の写真"></figure>
+      <p class="ask">どこが変でしょう？</p>
+    </div>
+    <div class="inner split answer">
+      <div>
+        <p class="kicker">おしい日本語</p>
+        <h2>食べようとする歓迎</h2>
+        <p class="lead">西門。言いたかったのは、試吃歓迎。</p>
+        <p class="gloss">想說歡迎試吃，寫成「歡迎你打算要吃」。</p>
+      </div>
+      <figure class="photo">
+        <img src="img/tabeyou.jpg" alt="食べようとする歓迎と書かれた看板">
+      </figure>
+    </div>
+  </section>
+
+  <section class="slide quiz" aria-label="麺とスープ無料放題">
+    <div class="inner guess">
+      <figure class="photo"><img src="img/houdai.jpg" alt="看板の写真"></figure>
+      <p class="ask">どこが変でしょう？</p>
+    </div>
+    <div class="inner split answer">
+      <div>
+        <p class="kicker">おしい日本語</p>
+        <h2>麺とスープ無料放題！</h2>
+        <p class="lead">かなり近い。でも、放題はふつう「食べ放題」。</p>
+        <p class="gloss">很接近，但放題多半用在吃到飽。</p>
+      </div>
+      <figure class="photo">
+        <img src="img/houdai.jpg" alt="麺とスープ無料放題の看板">
+      </figure>
+    </div>
+  </section>
+
+  
+
+  
+
+
+  <section class="slide quiz" aria-label="まだ食べてないの">
+    <div class="inner guess">
+      <figure class="photo"><img src="img/mada.jpg" alt="電車の広告"></figure>
+      <p class="ask">どこが変でしょう？</p>
+    </div>
+    <div class="inner split answer">
+      <div>
+        <p class="kicker">逆方向</p>
+        <h2>まだ食べてないの？</h2>
+        <p class="lead">これは、日本側が中国語をまちがえた例。</p>
+        <p class="note">「まだ食べてないの？」は、あなたはまだ食べていないの？</p>
+        <p class="note">広告の中国語は「我还没有吃饭？」で、私がまだ食べていない、になっています。</p>
+        <p class="gloss">日文是問你還沒吃嗎，中文寫成我還沒有吃飯。</p>
+        <p class="src">写真：Joshua 提供</p>
+      </div>
+      <figure class="photo">
+        <img src="img/mada.jpg" alt="まだ食べてないの？の広告">
+      </figure>
+    </div>
+  </section>
+
+  <section class="slide" aria-label="質問">
+    <div class="inner center">
+      <p class="kicker">先生と話す</p>
+      <h2>三つの質問</h2>
+      <ol class="qs">
+        <li><span class="qmark">1</span>どれが一番危ない？</li>
+        <li><span class="qmark">2</span>日本でも中国語看板で同じことがある？</li>
+        <li><span class="qmark">3</span>極上うンチを見たら店に入る？</li>
+      </ol>
+    </div>
+  </section>
+
+</div>
+
+<nav class="nav" aria-label="スライド操作">
+  <button type="button" id="prev">前へ</button>
+  <div class="count" id="count" aria-live="polite"></div>
+  <button type="button" id="next">次へ</button>
+</nav>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var i = 0;
+  var prev = document.getElementById("prev");
+  var next = document.getElementById("next");
+  var count = document.getElementById("count");
+
+  function current() { return slides[i]; }
+  function isQuiz(s) { return s.classList.contains("quiz"); }
+
+  function label() {
+    var s = current();
+    if (isQuiz(s) && !s.classList.contains("revealed")) next.textContent = "答え";
+    else next.textContent = "次へ";
+  }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, idx) {
+      var on = idx === i;
+      s.classList.toggle("active", on);
+      if (!on) s.classList.remove("revealed");
+      if (on) s.scrollTop = 0;
+    });
+    count.textContent = (i + 1) + " / " + slides.length;
+    prev.disabled = i === 0 && !(isQuiz(current()) && current().classList.contains("revealed"));
+    next.disabled = i === slides.length - 1 && !(isQuiz(current()) && !current().classList.contains("revealed"));
+    label();
+  }
+
+  function forward() {
+    var s = current();
+    if (isQuiz(s) && !s.classList.contains("revealed")) {
+      s.classList.add("revealed");
+      label();
+      next.disabled = i === slides.length - 1;
+      prev.disabled = false;
+      return;
+    }
+    show(i + 1);
+  }
+
+  function back() {
+    var s = current();
+    if (isQuiz(s) && s.classList.contains("revealed")) {
+      s.classList.remove("revealed");
+      label();
+      prev.disabled = i === 0;
+      next.disabled = false;
+      return;
+    }
+    show(i - 1);
+  }
+
+  prev.addEventListener("click", back);
+  next.addEventListener("click", forward);
+
+  document.addEventListener("keydown", function (e) {
+    var k = e.key;
+    if (k === "ArrowRight" || k === "ArrowDown" || k === "PageDown" || k === " ") {
+      e.preventDefault();
+      forward();
+    } else if (k === "ArrowLeft" || k === "ArrowUp" || k === "PageUp") {
+      e.preventDefault();
+      back();
+    } else if (k === "Home") {
+      e.preventDefault();
+      show(0);
+    } else if (k === "End") {
+      e.preventDefault();
+      show(slides.length - 1);
+    }
+  });
+
+  show(0);
+})();
+</script>
+</body>
+</html>
